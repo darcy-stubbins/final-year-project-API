@@ -1,0 +1,24 @@
+<?php
+//connecting the API to the db
+
+namespace Classes;
+
+class Model
+{
+    public \PDO $db;
+
+    public function __construct()
+    {
+
+        $db_name = "crafting-app";
+        $db_server = "db";
+        $db_port = "3306";
+        $db_user = "darcy";
+        $db_pass = "password";
+
+        $this->db = new \PDO("mysql:host={$db_server};port={$db_port};dbname={$db_name};charset=utf8", $db_user, $db_pass);
+        $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    }
+}
+
