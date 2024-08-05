@@ -3,6 +3,7 @@
 
 namespace Classes;
 
+use Models\Pattern;
 use Models\User;
 
 class Router
@@ -10,7 +11,8 @@ class Router
     public array $route;
     public array $formData;
     public static array $routeMap = [
-        'user' => User::class
+        'user' => User::class,
+        'pattern' => Pattern::class
     ];
 
     public function __construct(string $route, array $formData = [])
@@ -47,7 +49,13 @@ class Router
     public function processURLArray()
     {
         $object = new self::$routeMap[$this->route[0]]();
-        $function = $this->route[1];
-        $object->$function($this->formData);
+        $function = lcfirst(str_replace('-', '', ucwords($this->route[1], '-'))); //changes the url to match the functions 
+        $objectId = $this->route[2] ?? null;
+        if ($objectId) {
+            echo $object->$function($objectId, $this->formData);
+        } else {
+            echo $object->$function($this->formData);
+        }
+
     }
 }

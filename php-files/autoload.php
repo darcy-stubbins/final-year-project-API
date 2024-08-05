@@ -1,5 +1,5 @@
 <?php
-//to autoload all files because PHP is old:(
+//to autoload all files because PHP is old
 
 $dir = __DIR__ . '/Classes';
 $files = scandir($dir, SCANDIR_SORT_ASCENDING);
