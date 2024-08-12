@@ -17,16 +17,16 @@ class Pattern extends Model
         ]);
     }
 
-    //function to show patterns 
-    public function show(int $id, array $data): string
+    //function to show all patterns in the db 
+    public function showAll()
     {
-        $stmt = $this->db->prepare("SELECT * FROM patterns WHERE id=?");
-        $stmt->execute([$id]);
-        $pattern = $stmt->fetch();
+        $stmt = $this->db->prepare("SELECT * FROM patterns");
+        $stmt->execute();
+        $pattern = $stmt->fetchAll();
 
-        return json_encode([
+        return json_encode(
             $pattern
-        ]);
+        );
     }
 
     //function to add comments to a pattern 
@@ -43,13 +43,13 @@ class Pattern extends Model
     //function to show comments on a pattern 
     public function getPatternComments(int $id, array $data)
     {
-        $stmt = $this->db->prepare("SELECT * FROM comments JOIN patterns ON comments.pattern_id = patterns.id WHERE comments.user_id=?");
+        $stmt = $this->db->prepare("SELECT c.*, u.user_name FROM comments as c JOIN users as u ON c.user_id = u.id WHERE c.pattern_id =?");
         $stmt->execute([$id]);
         $comments = $stmt->fetchAll();
 
-        return json_encode([
+        return json_encode(
             $comments
-        ]);
+        );
     }
 
     //function to add a like to a pattern 

@@ -16,7 +16,11 @@ class Model
         $db_user = "darcy";
         $db_pass = "password";
 
-        $this->db = new \PDO("mysql:host={$db_server};port={$db_port};dbname={$db_name};charset=utf8", $db_user, $db_pass);
+        $options = [
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        ];
+
+        $this->db = new \PDO("mysql:host={$db_server};port={$db_port};dbname={$db_name};charset=utf8", $db_user, $db_pass, $options);
         $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }

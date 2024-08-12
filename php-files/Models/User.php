@@ -3,6 +3,7 @@
 namespace Models;
 
 use Classes\Model;
+use PDO;
 
 class User extends Model
 {
@@ -18,6 +19,18 @@ class User extends Model
         return json_encode([
             'account added' => $result
         ]);
+    }
+
+    //function to show a user by id 
+    public function show(int $id)
+    {
+        $stmt = $this->db->prepare("SELECT u.user_name, u.user_email, u.user_password FROM users as u WHERE id=?");
+        $stmt->execute([$id]);
+        $user = $stmt->fetch();
+
+        return json_encode(
+            $user
+        );
     }
 
     //function to remove an account from the db 
@@ -45,12 +58,12 @@ class User extends Model
     //function to return list of users saved patterns 
     public function getSavedPatterns(int $id, array $data)
     {
-        $stmt = $this->db->prepare("SELECT * FROM patterns JOIN saved ON patterns.id = saved.pattern_id WHERE saved.user_id=?");
+        $stmt = $this->db->prepare("SELECT p.id, p.pattern_name, p.pdf_path FROM patterns as p JOIN saved ON p.id = saved.pattern_id WHERE saved.user_id=?");
         $stmt->execute([$id]);
         $saved = $stmt->fetchAll();
 
-        return json_encode([
+        return json_encode(
             $saved
-        ]);
+        );
     }
 }
